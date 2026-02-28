@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Milford 2026 — Voter Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f5f0e8;
+    --accent: #c8392b;
+    --gold: #d4a017;
+    --sage: #4a7c59;
+    --slate: #5c6b7a;
+    --light: #ebe5d5;
+    --card: #faf7f2;
+    --border: #d4c9b0;
+    --pro: #2d6a4f;
+    --con: #a53125;
+    --neutral: #5c6b7a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--accent);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .header-title {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .header-title h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: var(--paper);
+  }
+
+  .header-title .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .vote-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--paper);
+    opacity: 0.7;
+    letter-spacing: 1px;
+    text-align: right;
+  }
+
+  .vote-date strong {
+    color: var(--gold);
+    display: block;
+    font-size: 13px;
+    opacity: 1;
+  }
+
+  /* ─── TABS ─── */
+  .tabs {
+    background: var(--ink);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .tabs-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs-inner::-webkit-scrollbar { display: none; }
+
+  .tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    color: rgba(245,240,232,0.5);
+    cursor: pointer;
+    border: none;
+    background: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .tab:hover { color: var(--paper); }
+
+  .tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  /* ─── SECTION ─── */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ─── OVERVIEW STATS ─── */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .stat-card.gold::before { background: var(--gold); }
+  .stat-card.sage::before { background: var(--sage); }
+  .stat-card.slate::before { background: var(--slate); }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-top: 6px;
+  }
+
+  /* ─── COST BREAKDOWN BAR ─── */
+  .cost-overview {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .cost-overview h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+
+  .cost-bar-container {
+    display: flex;
+    height: 40px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    gap: 2px;
+  }
+
+  .cost-segment {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: white;
+    font-weight: 500;
+    transition: all 0.3s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cost-segment:hover { filter: brightness(1.1); }
+
+  .cost-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--slate);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ─── ARTICLE CARDS ─── */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .article-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .article-card:hover {
+    border-color: var(--ink);
+    box-shadow: 4px 4px 0 var(--ink);
+    transform: translate(-2px, -2px);
+  }
+
+  .article-card.expanded {
+    grid-column: 1 / -1;
+  }
+
+  .card-header {
+    padding: 16px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .article-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: white;
+    background: var(--ink);
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .cost-tag {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .cost-tag.high { background: #fde8e6; color: var(--con); }
+  .cost-tag.medium { background: #fef3cd; color: #856404; }
+  .cost-tag.low { background: #e8f4ec; color: var(--pro); }
+  .cost-tag.none { background: var(--light); color: var(--slate); }
+
+  .card-summary {
+    padding: 14px 20px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #3a3a4a;
+  }
+
+  .card-footer {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--border);
+    background: var(--light);
+  }
+
+  .recommendation-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  .pill.yes { background: #d4edda; color: #155724; }
+  .pill.no { background: #f8d7da; color: #721c24; }
+  .pill.split { background: #fff3cd; color: #856404; }
+  .pill.neutral { background: var(--border); color: var(--slate); }
+
+  .expand-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--slate);
+    background: none;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .expand-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* ─── EXPANDED DETAIL ─── */
+  .card-detail {
+    display: none;
+    padding: 20px;
+    border-top: 2px solid var(--ink);
+    background: #fdfaf6;
+  }
+
+  .card-detail.open { display: block; }
+
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .pc-box {
+    border-radius: 3px;
+    padding: 14px;
+  }
+
+  .pc-box.pros { background: #edf7f0; border: 1px solid #b7dfc4; }
+  .pc-box.cons { background: #fdf0ef; border: 1px solid #f0bab6; }
+
+  .pc-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .pc-box.pros .pc-label { color: var(--pro); }
+  .pc-box.cons .pc-label { color: var(--con); }
+
+  .pc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pc-list li {
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .pc-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    font-size: 10px;
+    top: 1px;
+  }
+
+  .pc-box.pros .pc-list li::before { color: var(--pro); }
+  .pc-box.cons .pc-list li::before { color: var(--con); }
+
+  .outcomes-box {
+    background: #f0f4ff;
+    border: 1px solid #c5d0f0;
+    border-radius: 3px;
+    padding: 14px;
+  }
+
+  .outcomes-box .pc-label { color: #3a4a8a; }
+
+  .outcome-row {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 8px;
+    align-items: start;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+
+  .outcome-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    text-align: center;
+  }
+
+  .outcome-label.pass { background: #d4edda; color: #155724; }
+  .outcome-label.fail { background: #f8d7da; color: #721c24; }
+
+  /* ─── CANDIDATES SECTION ─── */
+  .candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .candidate-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .candidate-office {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .candidate-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .candidate-tagline {
+    font-size: 12px;
+    color: var(--slate);
+    line-height: 1.5;
+  }
+
+  .candidate-tag {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--light);
+    color: var(--slate);
+    text-transform: uppercase;
+  }
+
+  /* ─── SCHOOL SECTION ─── */
+  .school-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 20px 24px;
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
+  }
+
+  .school-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+  }
+
+  .school-header p {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-top: 4px;
+  }
+
+  /* ─── BALLOT SUMMARY ─── */
+  .ballot-summary {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .ballot-summary h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin-bottom: 16px;
+    color: var(--gold);
+  }
+
+  .ballot-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ballot-list li {
+    display: grid;
+    grid-template-columns: 80px 1fr 100px;
+    gap: 12px;
+    align-items: center;
+    font-size: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .ballot-list li:last-child { border-bottom: none; }
+
+  .ballot-art-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .ballot-art-name {
+    color: rgba(245,240,232,0.85);
+  }
+
+  .ballot-art-cost {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-align: right;
+    color: rgba(245,240,232,0.5);
+  }
+
+  /* ─── FILTER BAR ─── */
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    padding: 5px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--slate);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* ─── DIVIDER ─── */
+  .section-divider {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin: 28px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── TAX IMPACT ─── */
+  .tax-note {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--slate);
+    background: var(--light);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 8px 12px;
+    margin-top: 8px;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    .overview-grid { grid-template-columns: repeat(2, 1fr); }
+    .articles-grid { grid-template-columns: 1fr; }
+    .candidates-grid { grid-template-columns: 1fr; }
+    .pros-cons { grid-template-columns: 1fr; }
+    .header-title .subtitle { display: none; }
+  }
+
+  /* Animations */
+  .section.active .article-card {
+    animation: fadeUp 0.3s ease both;
+  }
+
+  .section.active .article-card:nth-child(2) { animation-delay: 0.05s; }
+  .section.active .article-card:nth-child(3) { animation-delay: 0.1s; }
+  .section.active .article-card:nth-child(4) { animation-delay: 0.15s; }
+  .section.active .article-card:nth-child(5) { animation-delay: 0.2s; }
+  .section.active .article-card:nth-child(6) { animation-delay: 0.25s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .vote-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--slate);
+  }
+
+  .vote-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .vote-tracker {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    border: 2px solid var(--gold);
+    display: none;
+    z-index: 200;
+  }
+
+  .vote-tracker.show { display: block; }
+  .vote-tracker span { color: var(--gold); font-size: 16px; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-title">
+      <h1>Milford 2026 Voter Guide</h1>
+      <div class="subtitle">Plain Talk Edition</div>
+    </div>
+    <div class="vote-date">
+      Vote Day
+      <strong>March 10, 2026</strong>
+      Milford High School · 6AM–8PM
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tabs-inner">
+      <button class="tab active" onclick="showTab('overview')">Overview</button>
+      <button class="tab" onclick="showTab('town')">Town Articles</button>
+      <button class="tab" onclick="showTab('zoning')">Zoning</button>
+      <button class="tab" onclick="showTab('school')">School District</button>
+      <button class="tab" onclick="showTab('candidates')">Candidates</button>
+      <button class="tab" onclick="showTab('ballot')">My Ballot</button>
+    </div>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- ══════════════ OVERVIEW ══════════════ -->
+  <div id="overview" class="section active">
+
+    <div class="overview-grid">
+      <div class="stat-card">
+        <div class="stat-number">23</div>
+        <div class="stat-label">Warrant Articles</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-number">$79M+</div>
+        <div class="stat-label">Total Requested</div>
+      </div>
+      <div class="stat-card sage">
+        <div class="stat-number">$25.93</div>
+        <div class="stat-label">2025 Total Tax Rate /1,000</div>
+      </div>
+      <div class="stat-card slate">
+        <div class="stat-number">9.16%</div>
+        <div class="stat-label">Town Budget Increase</div>
+      </div>
+    </div>
+
+    <div class="cost-overview">
+      <h2>Where the Money Goes — All Proposed Spending</h2>
+      <div class="cost-bar-container" id="costBar"></div>
+      <div class="cost-legend" id="costLegend"></div>
+      <div class="tax-note">💡 Tax impact estimates are per $1,000 of assessed home value. A $300,000 home multiplies by 0.3.</div>
+    </div>
+
+    <div class="section-divider">Key Items to Know</div>
+
+    <div class="articles-grid">
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 5</span>
+          <span class="card-title">Town Operating Budget</span>
+          <span class="cost-tag high">$21.37M</span>
+        </div>
+        <div class="card-summary">The main town budget covers all departments: police, fire, public works, admin. Up 9.16% from last year — driven largely by health insurance (+$622K), debt payments, 3 new firefighters, and an extra payroll cycle this year.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill yes">Select Board ✓</span>
+            <span class="pill yes">Budget Comm ✓</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ If You Vote YES</div>
+              <ul class="pc-list">
+                <li>All services fully funded at requested levels</li>
+                <li>3 additional firefighters retained</li>
+                <li>New accounting software for future savings</li>
+                <li>Mandatory state revaluation funded</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ If You Vote NO</div>
+              <ul class="pc-list">
+                <li>Default budget kicks in at $21.21M (still up 8.3%)</li>
+                <li>Some discretionary spending may be cut</li>
+                <li>Town could call a special meeting to revise</li>
+                <li>Budget Advisory doesn't support the default budget</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Potential Outcomes</div>
+            <div class="outcome-row">
+              <span class="outcome-label pass">PASS</span>
+              <span>Tax rate ~$6.28/$1,000 for municipal portion. $300K home pays ~$1,884/yr for town services.</span>
+            </div>
+            <div class="outcome-row">
+              <span class="outcome-label fail">FAIL</span>
+              <span>Default budget applies — $6.20/$1,000. Savings of ~$24/yr on a $300K home.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 3</span>
+          <span class="card-title">Water Main Replacement — Highlands Area</span>
+          <span class="cost-tag high">$4.42M Bond</span>
+        </div>
+        <div class="card-summary">Replaces over 8,000 feet of water mains on Shady Lane, Granite St., Highland Ave., and nearby streets. Some pipes date to the 1890s. Paid by water user fees — no tax impact.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill yes">Select Board ✓</span>
+            <span class="pill yes">Budget Comm ✓</span>
+            <span class="pill yes">Commissioners ✓</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Infrastructure from the 1890s — long overdue</li>
+                <li>Zero property tax impact (water rates pay for it)</li>
+                <li>Prevents costlier emergency replacements later</li>
+                <li>Improves water quality and flow for residents</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Raises water user rates to repay $4.42M bond</li>
+                <li>Requires 3/5 supermajority to pass</li>
+                <li>Construction disruption on affected streets</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Potential Outcomes</div>
+            <div class="outcome-row">
+              <span class="outcome-label pass">PASS</span>
+              <span>Work begins on Highland-area streets. Water rate increases gradually to cover bond payments. Long-term reliability improves.</span>
+            </div>
+            <div class="outcome-row">
+              <span class="outcome-label fail">FAIL</span>
+              <span>130+ year-old pipes stay in service. Risk of failures rises. Town may face higher emergency costs later.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 8</span>
+          <span class="card-title">Town Road Reconstruction</span>
+          <span class="cost-tag high">$800,000</span>
+        </div>
+        <div class="card-summary">Rebuilds Foster Rd, Mullin Rd, Courier Rd, Heritage Way, Maple St, Madison St, and Pine Valley St. The Select Board is split 4-1 on this — one member feels it's too much given the already-large budget increase.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill split">Select Board 4-1 ✓</span>
+            <span class="pill yes">Budget Comm ✓</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Deferral makes repairs more expensive long-term</li>
+                <li>Road safety impacts residents and emergency services</li>
+                <li>$335K already in budget — this adds dedicated funding</li>
+                <li>Specific roads named — transparent use of funds</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Budget already up 9%+ — adds more burden</li>
+                <li>$335K already allocated for roads in operating budget</li>
+                <li>Some budget drivers this year are one-time costs</li>
+                <li>Tax impact of $0.38/$1,000 ($114/yr on $300K home)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Potential Outcomes</div>
+            <div class="outcome-row">
+              <span class="outcome-label pass">PASS</span>
+              <span>7 roads get reconstruction this cycle. Estimated $38.33 extra per $100K assessed value.</span>
+            </div>
+            <div class="outcome-row">
+              <span class="outcome-label fail">FAIL</span>
+              <span>Roads deferred another year. $335K in operating budget still available for basic maintenance.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 19</span>
+          <span class="card-title">Dog Park at Heron Pond Road</span>
+          <span class="cost-tag none">No Cost</span>
+        </div>
+        <div class="card-summary">Converts an unused sports field along Heron Pond Rd into a fenced dog park. The Dog Park Association pays for fencing. Select Board split 3-2 yes; Budget Advisory Committee is 9-0 against — mainly over location concerns.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill split">Select Board 3-2 ✓</span>
+            <span class="pill no">Budget Comm ✗</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Zero cost to taxpayers — fencing donated by Association</li>
+                <li>Fields never used for sports due to condition</li>
+                <li>Town insurance covers it at no extra charge</li>
+                <li>Dog parks support community and pet wellbeing</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Location too far from residents who need it most</li>
+                <li>Close to Heron Pond School — liability concern</li>
+                <li>Loses potential recreation field space for youth sports</li>
+                <li>Noise and traffic issues near surrounding homes</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Potential Outcomes</div>
+            <div class="outcome-row">
+              <span class="outcome-label pass">PASS</span>
+              <span>Fenced dog park opens at Heron Pond Rd. Association installs and manages. Town mows, insures.</span>
+            </div>
+            <div class="outcome-row">
+              <span class="outcome-label fail">FAIL</span>
+              <span>Fields remain as-is. Dog Park Association can pursue alternative sites or bring a new petition next year.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ TOWN ARTICLES ══════════════ -->
+  <div id="town" class="section">
+    <div class="filter-bar">
+      <span class="filter-label">Filter:</span>
+      <button class="filter-btn active" onclick="filterCards(this, 'all')">All</button>
+      <button class="filter-btn" onclick="filterCards(this, 'high')">High Cost ($1M+)</button>
+      <button class="filter-btn" onclick="filterCards(this, 'medium')">Mid Cost</button>
+      <button class="filter-btn" onclick="filterCards(this, 'low')">Low Cost (&lt;$50K)</button>
+      <button class="filter-btn" onclick="filterCards(this, 'contested')">Contested</button>
+    </div>
+
+    <div class="articles-grid" id="townGrid">
+
+      <div class="article-card" data-tier="high" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 3</span>
+          <span class="card-title">Highlands Water Main Replacement</span>
+          <span class="cost-tag high">$4.42M Bond</span>
+        </div>
+        <div class="card-summary">Replace 8,000+ ft of water mains, some from the 1890s. Funded by water user fees — no property tax impact. Requires 3/5 supermajority.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill yes">All Boards ✓ (unanimous)</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Reasons to Support</div>
+              <ul class="pc-list">
+                <li>Critical aging infrastructure — pipes from 1890s</li>
+                <li>No property tax increase — paid by water rates</li>
+                <li>Prevents costly emergency repairs later</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Reasons to Oppose</div>
+              <ul class="pc-list">
+                <li>Water rates will increase to service the bond</li>
+                <li>Needs 3/5 majority — a higher bar to clear</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 If Passes: Work begins on Highlands streets. Water rates rise modestly. | If Fails: Aging pipes remain; risk of failure grows.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="high" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 4</span>
+          <span class="card-title">Federal Grant Match Fund — Water</span>
+          <span class="cost-tag high">$1M Bond</span>
+        </div>
+        <div class="card-summary">Authorizes up to $1M in bonds solely to provide a 20% local match for federal water infrastructure grants. Only used if a grant opportunity arises. No tax impact — water rate funded.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Enables town to quickly grab federal money (up to $4M leverage)</li>
+                <li>No tax impact — funded through water rates</li>
+                <li>Bond only issued if grant actually received</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Blanket authorization — no specific project tied to it yet</li>
+                <li>Federal funding landscape is uncertain</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 If Passes: Town can act fast on grants without waiting for another vote. | If Fails: Town must hold another vote before accepting certain grants.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="high" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 5</span>
+          <span class="card-title">Town Operating Budget</span>
+          <span class="cost-tag high">$21.37M</span>
+        </div>
+        <div class="card-summary">Annual town operations budget — 9.16% higher than 2025. Major drivers: health insurance (+$622K), 3 firefighters, extra payroll period, mandatory state revaluation. Default if rejected: $21.21M.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Vote YES</div>
+              <ul class="pc-list">
+                <li>Fully funds all services at planned levels</li>
+                <li>Covers mandatory costs over which town has no control</li>
+                <li>Includes new software for long-term efficiency gains</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Vote NO</div>
+              <ul class="pc-list">
+                <li>Default budget is still 8.3% higher — little savings</li>
+                <li>May restrict some service improvements</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: $6.28/$1,000 tax rate | NO: $6.20/$1,000 default — $24/yr savings on $300K home</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="high" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 6</span>
+          <span class="card-title">Wastewater Department Budget</span>
+          <span class="cost-tag medium">$2.997M</span>
+        </div>
+        <div class="card-summary">Annual wastewater/sewer operations. Covers 40 miles of sewer main, 1,200 manholes, 3,000+ customers. Up 4.69% from 2025. Funded entirely by sewer user fees — no tax impact.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Essential service — keeps sewer system functioning</li>
+                <li>No tax impact — sewer ratepayers fund this</li>
+                <li>Modest 4.69% increase</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Sewer rates will reflect this increase</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Routine operational vote — failure would force a special meeting and default budget.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="high" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 7</span>
+          <span class="card-title">Water Department Budget</span>
+          <span class="cost-tag medium">$2.499M</span>
+        </div>
+        <div class="card-summary">Covers 64 miles of water pipe, 518 hydrants, 3,400+ customers. Up 2.86% from 2025. Funded by water user fees — no property tax impact.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Keeps water system running for 3,400+ customers</li>
+                <li>Low 2.86% increase</li>
+                <li>No tax impact</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Notes</div>
+              <ul class="pc-list">
+                <li>Combined with Art. 3 bond, water rates will see meaningful increases</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Routine vote — rejection triggers default budget and special meeting.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="high" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 8</span>
+          <span class="card-title">Road Reconstruction</span>
+          <span class="cost-tag high">$800,000</span>
+        </div>
+        <div class="card-summary">Rebuilds 7 roads: Foster Rd, Mullin Rd, Courier Rd, Heritage Way, Maple St, Madison St, Pine Valley St. Select Board split 4-1 — minority says taxpayers already stretched thin this year.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill split">Select Board 4-1 ✓</span>
+            <span class="pill yes">Budget Comm ✓</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Vote YES</div>
+              <ul class="pc-list">
+                <li>Proactive repair costs less than reactive emergency repair</li>
+                <li>Specific roads identified — money is clearly allocated</li>
+                <li>Safety benefit for all users including emergency services</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Vote NO</div>
+              <ul class="pc-list">
+                <li>Budget already up 9%+ — this adds $38.33/$100K assessed</li>
+                <li>$335K for roads is already in the operating budget</li>
+                <li>Several budget drivers this year are one-time only</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: 7 roads rebuilt this cycle, ~$114/yr added for $300K home | NO: Deferred — basic maintenance continues from operating budget</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 9</span>
+          <span class="card-title">Police Union Contract (AFSCME)</span>
+          <span class="cost-tag low">$90,025/yr</span>
+        </div>
+        <div class="card-summary">3-year contract (2026–2028) with 3.5%, 3.5%, and 4% raises for police staff. Year 1 cost: $90K. Tax impact: about $4.31 per $100K of assessed value.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Retains experienced officers in a competitive market</li>
+                <li>Already negotiated — rejecting disrupts labor relations</li>
+                <li>Small per-household cost</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Notes</div>
+              <ul class="pc-list">
+                <li>Year 3 (2028) jumps to 4% — higher than first two years</li>
+                <li>Benefits portion grows significantly in year 3</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Approved contract takes effect. | NO: Return to bargaining — potential labor dispute.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 10</span>
+          <span class="card-title">Community Transportation Bus (SVTC)</span>
+          <span class="cost-tag low">$32,000</span>
+        </div>
+        <div class="card-summary">Milford's share of the regional Souhegan Valley Transportation Collaborative — wheelchair-accessible rides for seniors, disabled residents, and the public to medical appointments, grocery stores, etc.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Serves seniors and disabled residents who have no other option</li>
+                <li>Riders pay a small fare — partially self-funded</li>
+                <li>Regional collaboration keeps per-town cost low</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Notes</div>
+              <ul class="pc-list">
+                <li>Ongoing annual commitment</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Service continues. | NO: Milford residents may lose access to regional bus service.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 11</span>
+          <span class="card-title">Social Services Agencies</span>
+          <span class="cost-tag low">$45,000</span>
+        </div>
+        <div class="card-summary">Funds 4 agencies: Greater Nashua Mental Health (270 residents), Lamprey Mobile Health (84 residents, 351 visits), Meals on Wheels (182 residents), and SHARE Outreach (1,338 residents).</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Serves nearly 2,000 individual Milford residents directly</li>
+                <li>Reduces town welfare spending downstream</li>
+                <li>Addresses food insecurity worsened by recent federal cuts</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Notes</div>
+              <ul class="pc-list">
+                <li>Annual commitment — no defined end</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Agencies funded, serving ~2K residents. | NO: These organizations serve fewer Milford residents or shift costs to welfare rolls.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 12</span>
+          <span class="card-title">250th US Anniversary Celebration</span>
+          <span class="cost-tag low">$20,000</span>
+        </div>
+        <div class="card-summary">Funds events celebrating the US Semiquincentennial (250 years). Plans not fully finalized. Select Board majority and Budget Advisory both say "not enough info." Minority says it's a once-in-a-generation opportunity.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill no">Select Board ✗ (3-2)</span>
+            <span class="pill no">Budget Comm ✗ (8-1)</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Once-in-a-lifetime milestone — next is 2076</li>
+                <li>Relatively small ask ($20K)</li>
+                <li>Community events boost local businesses</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>No finalized plan for how money will be spent</li>
+                <li>Could be raised through private donations/sponsorships</li>
+                <li>Budget already under strain this year</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Committee gets $20K for 2026 events. | NO: Organizers pursue private fundraising — event may still happen.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 13</span>
+          <span class="card-title">Recreation Facilities Capital Reserve</span>
+          <span class="cost-tag low">$20,000</span>
+        </div>
+        <div class="card-summary">Creates a savings fund for future park and pool maintenance — specifically the aging Keyes Memorial Pool (60 yrs old, pump 15+ yrs old). Select Board split 3-2.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill split">Select Board 3-2 ✓</span>
+            <span class="pill yes">Budget Comm ✓</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Pool pump is 15+ years old — replacement is coming</li>
+                <li>Spreading cost over years is smarter than one big hit</li>
+                <li>Parks serve thousands of residents year-round</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Tight budget year — adds another ongoing commitment</li>
+                <li>Art. 21 would also cover rec vehicles — overlap concern</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Fund starts accumulating — avoids future budget spikes. | NO: Park/pool repairs funded ad hoc when needed.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 14–16</span>
+          <span class="card-title">Parades & Summer Concerts</span>
+          <span class="cost-tag low">$26,000 total</span>
+        </div>
+        <div class="card-summary">Three articles: Memorial/Veterans/Labor Day parades ($11K), Summer Band Concerts ($9K), Labor Day Parade bands ($6K). All long-standing community traditions. All boards unanimous YES.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Labor Day Parade is one of the largest in NH</li>
+                <li>Summer concerts run 10 shows/summer for 20+ years</li>
+                <li>Honors veterans — flags on graves, parade support</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Notes</div>
+              <ul class="pc-list">
+                <li>Some argue Recreation Dept could fundraise for concerts</li>
+                <li>Labor Day article reduced $2K from prior year</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Non-controversial. Failure means events may be cancelled or scaled back.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="false" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 17–18</span>
+          <span class="card-title">Veterans & Elderly Tax Exemptions</span>
+          <span class="cost-tag none">No Cost</span>
+        </div>
+        <div class="card-summary">Art. 17: Increases disabled veteran tax credit from $1,500 → $1,900 (required by new state law). Art. 18: Adjusts elderly exemption thresholds to account for 2026 town revaluation — keeps seniors' tax burden stable.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Art. 17 is required to comply with new NH state law</li>
+                <li>Art. 18 prevents seniors from losing exemption due to revaluation inflation</li>
+                <li>Minimal budget impact</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Notes</div>
+              <ul class="pc-list">
+                <li>Marginally reduces taxable base, shifting load slightly to other taxpayers</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Largely technical compliance votes. Strong broad support. Rejecting Art. 17 could put Milford out of compliance with state law.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 19</span>
+          <span class="card-title">Dog Park — Heron Pond Road</span>
+          <span class="cost-tag none">No Cost</span>
+        </div>
+        <div class="card-summary">Convert unused sports fields to a fenced dog park. Dog Park Association pays for fencing. Budget Advisory opposes 9-0 over location, proximity to school, and loss of recreation field space.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill split">Select Board 3-2 ✓</span>
+            <span class="pill no">Budget Comm ✗ (9-0)</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Zero cost — Association funds fencing</li>
+                <li>Fields have never been used for sports</li>
+                <li>Large + small dog areas, holding pen for safety</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Wrong location — too far from high-density areas that need it</li>
+                <li>Adjacent to Heron Pond Elementary School</li>
+                <li>Eliminates potential future sports field option</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Park opens at Heron Pond. | NO: Association can seek alternative site or return with new petition.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 20</span>
+          <span class="card-title">Conservation Land Fund (Petition)</span>
+          <span class="cost-tag low">$20,000</span>
+        </div>
+        <div class="card-summary">Adds to the Conservation Fund (currently only $16K). Used for buying land/easements quickly when opportunities arise. Select Board majority opposes — 17% of town land already untaxed conservation land.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill no">Select Board ✗ (3-2)</span>
+            <span class="pill yes">Budget Comm ✓ (9-0)</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Fund has only $16K — far below recommended $280K</li>
+                <li>Land opportunities disappear quickly — need cash ready</li>
+                <li>Conservation land reduces service costs vs. residential</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>17% of town already in conservation — untaxable land</li>
+                <li>Budget already stressed this year</li>
+                <li>Could be funded via Land Use Change Tax instead</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Fund grows to $36K — still below recommended level. | NO: Fund stays at $16K, limiting Conservation Commission's ability to act quickly.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="low" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 21</span>
+          <span class="card-title">Recreation Bus Fund (Petition)</span>
+          <span class="cost-tag low">$15,000</span>
+        </div>
+        <div class="card-summary">Creates a separate capital reserve fund to eventually replace the recreation bus (currently 6 yrs old, 14K miles). Select Board says Art. 13 already covers this. Budget Advisory splits 6-3 in favor.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill no">Select Board ✗ (3-2)</span>
+            <span class="pill split">Budget Comm 6-3 ✓</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Bus delivery takes up to a year — plan now</li>
+                <li>Used for 28 trips in 2025 (seniors + youth)</li>
+                <li>Dedicated fund = no future budget shock</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Bus has only 14K miles — not urgent</li>
+                <li>Art. 13 recreation capital reserve already covers vehicles</li>
+                <li>Two funds for the same purpose = duplication</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Separate bus fund starts. | NO: Art. 13 fund (if passed) is intended to cover this. Consider whether both articles pass.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="none" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 22</span>
+          <span class="card-title">Disabled Exemption Study (Petition)</span>
+          <span class="cost-tag none">Advisory Only</span>
+        </div>
+        <div class="card-summary">Not binding — asks the Select Board to research whether to create a property tax exemption for disabled residents. No money allocated. Results in a potential 2027 warrant article.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill yes">Select Board ✓</span>
+            <span class="pill yes">Budget Comm ✓ (8-1)</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Purely advisory — no financial commitment</li>
+                <li>Helps disabled + low-income seniors stay in their homes</li>
+                <li>Directs board to research before acting</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Vague criteria — "disabled" and "low income" undefined</li>
+                <li>Could lead to 2027 article with unintended fiscal impact</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Low stakes advisory vote. YES directs board to study it. NO = topic dropped unless re-petitioned.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-tier="none" data-contested="true" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Art. 23</span>
+          <span class="card-title">Elect (vs. Appoint) Conservation Commission (Petition)</span>
+          <span class="cost-tag none">No Cost</span>
+        </div>
+        <div class="card-summary">Changes Conservation Commission members from appointed by Select Board to elected by voters, starting 2027. Select Board majority opposes — worried elected members may lack technical expertise.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill no">Select Board ✗ (4-1)</span>
+            <span class="pill neutral">Budget Comm: No Position</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Directly accountable to voters</li>
+                <li>Could attract candidates with expertise who prefer election</li>
+                <li>More democratic — commission becomes more representative</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Elections favor name recognition over expertise</li>
+                <li>Scientists and environmentalists less likely to run</li>
+                <li>Appointment allows targeted recruitment for specific skills</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Commission transitions to elected starting 2027. | NO: Appointment process continues as-is.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ ZONING ══════════════ -->
+  <div id="zoning" class="section">
+    <div style="background:#e8f0e8;border:1px solid #b7d4b7;border-radius:4px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#2d5a2d;">
+      <strong>All 4 zoning changes were unanimously recommended by the Planning Board (7-0).</strong> These are about where and how housing can be built in Milford.
+    </div>
+    <div class="articles-grid">
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Vote 1</span>
+          <span class="card-title">"Back Lots" in Residence R District</span>
+          <span class="cost-tag none">Zoning</span>
+        </div>
+        <div class="card-summary">Allows large R-district lots to be subdivided into up to 4 lots sharing a 25-ft common driveway. No road frontage needed for each new lot. All lots must average 2 acres minimum.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">Planning Board 7-0 ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Adds housing without requiring new roads or infrastructure</li>
+                <li>Keeps minimum 2-acre average — preserves rural feel</li>
+                <li>4th lot bonus if it qualifies as workforce housing</li>
+                <li>Streamlined, defined process for subdivisions</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Shared driveways can create neighbor disputes</li>
+                <li>Could increase traffic on existing roads</li>
+                <li>Changes the character of large-lot neighborhoods</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Landowners with 8+ acres can create up to 4 lots via shared driveway. | NO: Current subdivision rules requiring 200ft road frontage per lot remain.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Vote 2</span>
+          <span class="card-title">Accessory Dwelling Units (ADU) Update</span>
+          <span class="cost-tag none">Zoning</span>
+        </div>
+        <div class="card-summary">Updates local ADU rules to match NH law (effective July 2025). ADUs now allowed "by right" — no special permit needed. Max size increases 750 → 1,100 sq ft. Requires 1 dedicated parking space.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">Planning Board 7-0 ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>State law already allows "by right" ADUs — this aligns local rules</li>
+                <li>Eliminates expensive, time-consuming ZBA hearing</li>
+                <li>1,100 sq ft allows more functional living space</li>
+                <li>In-law suites, rental income, multigenerational living</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>1,100 sq ft feels like a second house in some contexts</li>
+                <li>More density in single-family neighborhoods</li>
+                <li>If article fails, max stays at 750 sq ft (by right still applies via state law)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: ADUs allowed by right up to 1,100 sq ft. | NO: ADUs still allowed by right (state law), but Milford limits them to 750 sq ft.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Vote 3</span>
+          <span class="card-title">"Cottage Courts" — Clustered Housing</span>
+          <span class="cost-tag none">Zoning</span>
+        </div>
+        <div class="card-summary">New housing type: clusters of up to 12 small homes (max 1,800 sq ft each, 2 stories) arranged around a shared green space. Allowed in Residence A, B, Commercial C, and LCB zones via Conditional Use Permit.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">Planning Board 7-0 ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Fills gap between apartments and single-family homes</li>
+                <li>Common green space creates community feel</li>
+                <li>Unified architecture requirement keeps visual quality high</li>
+                <li>Still requires Conditional Use Permit — town retains control</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>New, untested concept in Milford</li>
+                <li>Up to 12 units per pod (multiple pods possible) = significant density</li>
+                <li>Design enforcement over time can be challenging</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Developers can apply for cottage court projects in select zones. | NO: This housing type remains prohibited in Milford.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Vote 4</span>
+          <span class="card-title">Downtown Overlay District (Milford Oval)</span>
+          <span class="cost-tag none">Zoning</span>
+        </div>
+        <div class="card-summary">Creates a 97-acre overlay zone around downtown allowing density up to 35 units/acre (currently 5) through design incentives: pedestrian improvements, parking, setbacks, workforce housing, architecture. Voted 5-0 by Planning Board.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">Planning Board 5-0 ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Concentrates growth where infrastructure already exists</li>
+                <li>Density bonuses are earned through design quality</li>
+                <li>Walkable downtown housing reduces car dependency</li>
+                <li>Could meaningfully increase housing supply in Milford</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>7x density increase is a major change to downtown character</li>
+                <li>Parking and traffic infrastructure may not support growth</li>
+                <li>Non-conforming lots already at 37 units/acre — complex baseline</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Downtown area eligible for major residential intensification over time. | NO: Downtown stays at 5 units/acre zoning limit.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ SCHOOL ══════════════ -->
+  <div id="school" class="section">
+    <div class="articles-grid">
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Q1</span>
+          <span class="card-title">CTE Renovation — Applied Technology Center</span>
+          <span class="cost-tag high">$3.85M Bond</span>
+        </div>
+        <div class="card-summary">Renovates the high school's vocational/tech center. Total project: $14.85M. Local bond: $3.85M. State expected to cover $11M (75%). Adds welding, electrical, powersports programs. Requires 3/5 majority.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">School Board 5-0 ✓</span><span class="pill yes">Budget Comm 5-0 ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>State pays ~75% — best leverage available for capital project</li>
+                <li>If local vote fails, state money disappears too</li>
+                <li>Updates CTE to current industry standards</li>
+                <li>No tax impact in 2026-27; ~$17.80/$100K starting 2027-28</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>State funding not guaranteed — contingency in warrant language</li>
+                <li>20-year bond at 4.3% — long-term commitment</li>
+                <li>Already high school budget year</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Project moves forward with state partnership. | NO: Project cancelled, state $11M is forfeited.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Q2</span>
+          <span class="card-title">School District Operating Budget</span>
+          <span class="cost-tag high">$52.72M</span>
+        </div>
+        <div class="card-summary">Annual school budget — up 5.09% from 2025-26. Drivers: 35% insurance increase, 20% transportation increase, special ed cost growth, MHS roof bond payments. State cut education funding by $285K. Counterintuitively, the default budget ($52.99M) is HIGHER than the proposed budget.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills">
+            <span class="pill yes">School Board 5-0 ✓</span>
+            <span class="pill split">Budget Comm 3-2 ✓</span>
+          </div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Vote YES (proposed budget)</div>
+              <ul class="pc-list">
+                <li>Proposed budget ($52.72M) is actually LOWER than default ($52.99M)</li>
+                <li>Allows more efficient spending choices</li>
+                <li>Covers insurance/transportation increases — non-negotiable costs</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Vote NO = Higher Default</div>
+              <ul class="pc-list">
+                <li>If you vote NO, the default ($52.99M) kicks in — costs MORE</li>
+                <li>Budget Advisory minority: unfilled positions inflate spending</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Unusual situation: voting YES saves money vs. the default. Estimated tax impact: $141.83/$100K (proposed) vs. $154.99/$100K (default).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Q3</span>
+          <span class="card-title">Custodial/Maintenance Staff Contract (MEPA)</span>
+          <span class="cost-tag low">$105,833 yr1</span>
+        </div>
+        <div class="card-summary">3-year contract for school facilities and maintenance staff. Restructures salary scale for competitive wages. Includes longevity incentives. Total over 3 years: $223,353. All boards unanimous YES.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards 5-0 ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Retains custodial staff — often hard to hire/keep</li>
+                <li>3-year stability for both district and employees</li>
+                <li>Already negotiated and agreed by both parties</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Notes</div>
+              <ul class="pc-list">
+                <li>Year 1 salary jump is significant ($85K of $186K total over 3 yrs)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 YES: Contract approved, ~$5.07/$100K impact yr1. | NO: Renegotiation required — potential labor disruption.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" onclick="toggleCard(this)">
+        <div class="card-header">
+          <span class="article-num">Q4</span>
+          <span class="card-title">Open Enrollment — Milford High School</span>
+          <span class="cost-tag none">No Budget Impact</span>
+        </div>
+        <div class="card-summary">Designates MHS as an open enrollment school for up to 6 non-resident students. Simultaneously sets 0% of Milford students allowed to leave for open enrollment schools. This is a cautious/exploratory measure.</div>
+        <div class="card-footer">
+          <div class="recommendation-pills"><span class="pill yes">All Boards 5-0 ✓</span></div>
+          <button class="expand-btn">Details ▾</button>
+        </div>
+        <div class="card-detail">
+          <div class="pros-cons">
+            <div class="pc-box pros">
+              <div class="pc-label">✓ Case For</div>
+              <ul class="pc-list">
+                <li>Allows board time to study impacts before full open enrollment</li>
+                <li>6 students is minimal — low risk pilot</li>
+                <li>Protects against revenue loss (0% outgoing)</li>
+              </ul>
+            </div>
+            <div class="pc-box cons">
+              <div class="pc-label">✗ Case Against</div>
+              <ul class="pc-list">
+                <li>Milford students can't benefit from open enrollment elsewhere</li>
+                <li>Financial implications of incoming tuition unclear</li>
+              </ul>
+            </div>
+          </div>
+          <div class="outcomes-box">
+            <div class="pc-label">📊 Low-stakes exploratory vote. No budget impact expected. Gives board framework to evaluate open enrollment before state mandates it.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════ CANDIDATES ══════════════ -->
+  <div id="candidates" class="section">
+    <div class="section-divider">Select Board — Vote for TWO (3-year term)</div>
+    <div class="candidates-grid">
+      <div class="candidate-card">
+        <div class="candidate-office">Selectman · 3-Year Term</div>
+        <div class="candidate-name">David J. Catanzano</div>
+        <div class="candidate-tagline">COO with 40+ years in business management, finance, and operations. 7-year Milford resident. Community service background in food banks and opioid task force work. First run for Select Board.</div>
+        <span class="candidate-tag">New Candidate</span>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-office">Selectman · 3-Year Term</div>
+        <div class="candidate-name">Chris Labonte</div>
+        <div class="candidate-tagline">45-year Milford resident. Owner of C.R. Labonte Ground Maintenance. Served on Select Board 2019-2022 and 2023-2026. Emphasizes taxpayer transparency and fiscal accountability.</div>
+        <span class="candidate-tag">Incumbent</span>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-office">Selectman · 3-Year Term</div>
+        <div class="candidate-name">Vanessa Sheehan</div>
+        <div class="candidate-tagline">52-year Milford resident. Realtor and current NH State Representative (3rd term). 6 years on Budget Advisory Committee. Focuses on fiscal prudence and new revenue streams.</div>
+        <span class="candidate-tag">State Rep, First SB Run</span>
+      </div>
+    </div>
+
+    <div class="section-divider">Other Town Offices</div>
+    <div class="candidates-grid">
+      <div class="candidate-card">
+        <div class="candidate-office">Town Moderator · 2-Year Term (vote for 1)</div>
+        <div class="candidate-name">Peter Basiliere</div>
+        <div class="candidate-tagline">18-year incumbent moderator. Retired printing technology consultant. Bates/UNH degrees. Oversees one of the largest polling places in the country with 150+ volunteers.</div>
+        <span class="candidate-tag">Incumbent · Unopposed</span>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-office">Water-Wastewater Commissioner · 3-Year Term</div>
+        <div class="candidate-name">Eric Knott</div>
+        <div class="candidate-tagline">17-year Milford resident. Operations Manager at Knott's Land Care. Background in irrigation system design. No direct water/sewer experience — willing to learn from senior staff.</div>
+        <span class="candidate-tag">New Candidate · Unopposed</span>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-office">Library Trustee · 3-Year Term (vote for 2)</div>
+        <div class="candidate-name">Shirley Wilson &amp; John Yule</div>
+        <div class="candidate-tagline">Wilson: 34-year resident, serving since 2018. Yule: Resident since 2005, Conservation Commission Chair, Budget Advisory, School District Clerk. Both running unopposed.</div>
+        <span class="candidate-tag">Incumbents · Unopposed</span>
+      </div>
+    </div>
+
+    <div class="section-divider">School District Offices</div>
+    <div class="candidates-grid">
+      <div class="candidate-card">
+        <div class="candidate-office">School Board · 3-Year Term (vote for 2)</div>
+        <div class="candidate-name">Tara Davoli</div>
+        <div class="candidate-tagline">Psychology BA, MA in Education Counseling. Advocate for special needs students. 3 children in Milford schools. Served on playground and budget committees. Settled in Milford 2015.</div>
+        <span class="candidate-tag">New Candidate</span>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-office">School Board · 3-Year Term (vote for 2)</div>
+        <div class="candidate-name">Amy Clark Canty</div>
+        <div class="candidate-tagline">21+ year educator. CAGS in Educational Leadership. Multiple NH and MA teaching licenses. Milford resident since 2013. Incumbent with focus on board cohesion and fiscal responsibility.</div>
+        <span class="candidate-tag">Incumbent</span>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-office">School District Clerk, Moderator, Treasurer</div>
+        <div class="candidate-name">Yule / Basiliere / Carl</div>
+        <div class="candidate-tagline">John Yule (Clerk), Peter Basiliere (Moderator), and Lisa Carl (Treasurer, interim since Oct 2025) are all running unopposed for their 2-year terms.</div>
+        <span class="candidate-tag">All Unopposed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ MY BALLOT ══════════════ -->
+  <div id="ballot" class="section">
+    <div class="ballot-summary">
+      <h2>📋 Quick Ballot Reference</h2>
+      <p style="font-size:12px;opacity:0.6;margin-bottom:16px;">Use this as a cheat sheet at the polls. Check the boards' recommendation consensus at a glance.</p>
+      <ul class="ballot-list">
+        <li><span class="ballot-art-num">ART. 2 V1</span><span class="ballot-art-name">Back Lot Zoning</span><span class="ballot-art-cost">7-0 ✓</span></li>
+        <li><span class="ballot-art-num">ART. 2 V2</span><span class="ballot-art-name">ADU Update</span><span class="ballot-art-cost">7-0 ✓</span></li>
+        <li><span class="ballot-art-num">ART. 2 V3</span><span class="ballot-art-name">Cottage Courts</span><span class="ballot-art-cost">7-0 ✓</span></li>
+        <li><span class="ballot-art-num">ART. 2 V4</span><span class="ballot-art-name">Downtown Overlay</span><span class="ballot-art-cost">5-0 ✓</span></li>
+        <li><span class="ballot-art-num">ART. 3</span><span class="ballot-art-name">Water Main Bond $4.42M</span><span class="ballot-art-cost">All ✓ (3/5)</span></li>
+        <li><span class="ballot-art-num">ART. 4</span><span class="ballot-art-name">Fed Grant Match $1M</span><span class="ballot-art-cost">All ✓ (3/5)</span></li>
+        <li><span class="ballot-art-num">ART. 5</span><span class="ballot-art-name">Town Budget $21.37M</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 6</span><span class="ballot-art-name">Wastewater Budget $2.99M</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 7</span><span class="ballot-art-name">Water Budget $2.49M</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 8</span><span class="ballot-art-name">Road Reconstruction $800K</span><span class="ballot-art-cost">4-1 ✓</span></li>
+        <li><span class="ballot-art-num">ART. 9</span><span class="ballot-art-name">Police Contract $90K</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 10</span><span class="ballot-art-name">Bus Service $32K</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 11</span><span class="ballot-art-name">Social Services $45K</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 12</span><span class="ballot-art-name">250th Anniversary $20K</span><span class="ballot-art-cost" style="color:#e8b4b0;">✗ Majority</span></li>
+        <li><span class="ballot-art-num">ART. 13</span><span class="ballot-art-name">Rec Facilities Reserve $20K</span><span class="ballot-art-cost">3-2 ✓</span></li>
+        <li><span class="ballot-art-num">ART. 14</span><span class="ballot-art-name">Parades $11K</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 15</span><span class="ballot-art-name">Summer Concerts $9K</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 16</span><span class="ballot-art-name">Labor Day Parade $6K</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 17</span><span class="ballot-art-name">Veteran Tax Credit</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 18</span><span class="ballot-art-name">Elderly Exemption Update</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 19</span><span class="ballot-art-name">Dog Park</span><span class="ballot-art-cost" style="color:#e8b4b0;">BAC ✗ 9-0</span></li>
+        <li><span class="ballot-art-num">ART. 20</span><span class="ballot-art-name">Conservation Fund $20K</span><span class="ballot-art-cost">Split</span></li>
+        <li><span class="ballot-art-num">ART. 21</span><span class="ballot-art-name">Rec Bus Fund $15K</span><span class="ballot-art-cost">Split</span></li>
+        <li><span class="ballot-art-num">ART. 22</span><span class="ballot-art-name">Disabled Exemption Study</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">ART. 23</span><span class="ballot-art-name">Elect Conservation Comm</span><span class="ballot-art-cost" style="color:#e8b4b0;">SB ✗ 4-1</span></li>
+        <li><span class="ballot-art-num">SCH Q1</span><span class="ballot-art-name">CTE Bond $3.85M</span><span class="ballot-art-cost">All ✓ (3/5)</span></li>
+        <li><span class="ballot-art-num">SCH Q2</span><span class="ballot-art-name">School Budget $52.72M</span><span class="ballot-art-cost">3-2 ✓</span></li>
+        <li><span class="ballot-art-num">SCH Q3</span><span class="ballot-art-name">MEPA Contract $105K</span><span class="ballot-art-cost">All ✓</span></li>
+        <li><span class="ballot-art-num">SCH Q4</span><span class="ballot-art-name">Open Enrollment</span><span class="ballot-art-cost">All ✓</span></li>
+      </ul>
+    </div>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:20px;">
+      <h3 style="font-family:'Playfair Display',serif;font-size:16px;margin-bottom:4px;">⚠️ Important Notes</h3>
+      <p style="font-size:13px;color:var(--slate);margin-top:8px;line-height:1.7;">
+        <strong>Arts. 3 & 4</strong> (water bonds) and <strong>School Q1</strong> (CTE) require a <strong>3/5 supermajority</strong> to pass — a higher bar than the standard majority.<br><br>
+        <strong>School Q2:</strong> If you vote NO, the default budget is actually <em>higher</em> ($52.99M vs $52.72M proposed). Voting YES saves money.<br><br>
+        <strong>Arts. 13 & 21</strong> overlap — if both pass, you're funding two recreation capital reserves. Consider voting for one or the other.<br><br>
+        All water/sewer articles have <strong>no property tax impact</strong> — they're funded by user rate fees.
+      </p>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="vote-tracker" id="voteTracker">
+  🗳️ Articles reviewed: <span id="reviewCount">0</span>
+</div>
+
+<script>
+  // ── Tab switching
+  function showTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // ── Card expand/collapse
+  let reviewedCount = 0;
+  const reviewed = new Set();
+
+  function toggleCard(card) {
+    const detail = card.querySelector('.card-detail');
+    const btn = card.querySelector('.expand-btn');
+    if (!detail) return;
+
+    const isOpen = detail.classList.contains('open');
+    // Close all others in same grid
+    card.closest('.articles-grid')?.querySelectorAll('.card-detail.open').forEach(d => {
+      d.classList.remove('open');
+      const b = d.closest('.article-card')?.querySelector('.expand-btn');
+      if (b) b.textContent = 'Details ▾';
+    });
+
+    if (!isOpen) {
+      detail.classList.add('open');
+      if (btn) btn.textContent = 'Close ▴';
+      // Track
+      if (!reviewed.has(card)) {
+        reviewed.add(card);
+        reviewedCount++;
+        document.getElementById('reviewCount').textContent = reviewedCount;
+        document.getElementById('voteTracker').classList.add('show');
+      }
+    }
+  }
+
+  // ── Filter buttons
+  function filterCards(btn, tier) {
+    document.querySelectorAll('#townGrid .filter-btn')?.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#townGrid .article-card').forEach(card => {
+      if (tier === 'all') {
+        card.style.display = '';
+      } else if (tier === 'contested') {
+        card.style.display = card.dataset.contested === 'true' ? '' : 'none';
+      } else {
+        card.style.display = card.dataset.tier === tier ? '' : 'none';
+      }
+    });
+  }
+
+  // ── Cost bar
+  const items = [
+    { label: 'Town Budget', amount: 21369930, color: '#c8392b' },
+    { label: 'School Budget', amount: 52722151, color: '#1a1a2e' },
+    { label: 'Water Main Bond', amount: 4421035, color: '#4a7c59' },
+    { label: 'Wastewater Budget', amount: 2997662, color: '#5c6b7a' },
+    { label: 'Water Budget', amount: 2499055, color: '#7a8c9e' },
+    { label: 'Grant Match Bond', amount: 1000000, color: '#d4a017' },
+    { label: 'CTE School Bond', amount: 3850000, color: '#3a5f8a' },
+    { label: 'Road Reconstruction', amount: 800000, color: '#8b6f47' },
+    { label: 'Police Contract', amount: 90025, color: '#6b4c8a' },
+    { label: 'Other Articles', amount: 166000, color: '#9e9e9e' },
+  ];
+
+  const total = items.reduce((s, i) => s + i.amount, 0);
+  const bar = document.getElementById('costBar');
+  const legend = document.getElementById('costLegend');
+
+  items.forEach(item => {
+    const pct = (item.amount / total * 100).toFixed(1);
+    const seg = document.createElement('div');
+    seg.className = 'cost-segment';
+    seg.style.cssText = `width:${pct}%;background:${item.color};min-width:${pct > 2 ? '0' : '4px'}`;
+    if (pct > 3) seg.textContent = `${pct}%`;
+    seg.title = `${item.label}: $${item.amount.toLocaleString()} (${pct}%)`;
+    bar.appendChild(seg);
+
+    const li = document.createElement('div');
+    li.className = 'legend-item';
+    li.innerHTML = `<div class="legend-dot" style="background:${item.color}"></div><span>${item.label} — $${(item.amount/1000000).toFixed(1)}M</span>`;
+    legend.appendChild(li);
+  });
+</script>
+</body>
+</html>
